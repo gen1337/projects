@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+  <script language="JavaScript">
+   
+    mytitle=new Array()
+    mytitle[0]="u are lucky"
+    mytitle[1]="l1l1l1ll1l1l"
+    mytitle[2]="discord.gg/totenkompf"
+    mytitle[3]="_+_+_+_+_+_+_+_+_"
+    mytitle[4]="msm2sfm"
+    mytitle[5]="как дела"
+    mytitle[6]="hm"
+    mytitle[7]="rompompom"
+    mytitle[8]="i love bo sinn"
+    mytitle[9]="black sun"
+    mytitle[10]="obkak"
+    len=mytitle.length
+    randnm=Math.round(Math.random()*(len-1))
+    document.title=mytitle[randnm]
+</script>
+
+<html lang="en">
+<head>
+
+
+    <link rel="stylesheet" type="text/css" href="background.css">
+    <link rel="stylesheet" type="text/css" href="sun.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title"></title>
+</head>
+<body>
+    <div class="background"></div>
+    <div class="sun1"></div>
+
+    <div class="title">genesis1337</div>
+
+    <script>
+        // Создаем глюки
+function createGlitch() {
+    const glitch = document.createElement('div');
+    glitch.classList.add('glitch');
+    
+    glitch.style.left = Math.random() * window.innerWidth + 'px'; // Рандомная позиция по горизонтали
+    document.body.appendChild(glitch);
+    
+    setTimeout(() => {
+        glitch.remove(); // Удаляем глюк после завершения анимации
+    }, 5000); // Время анимации в миллисекундах
+}
+
+// Добавляем глюки каждые 0.5 секунды
+setInterval(createGlitch, 500);
+
+    </script>
+    
+</body>
+</html>
+
+
