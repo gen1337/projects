@@ -1,0 +1,15 @@
+.sun1 {
+    width: 100px;
+    height: 100px;
+    background: url('sun.png') center/cover;
+    animation: spin 3s linear infinite;W
+}
+
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
