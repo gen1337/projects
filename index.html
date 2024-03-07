@@ -30,12 +30,26 @@
     <title id="title"></title>
 </head>
 <body>
+      <audio id="audioPlayer" autoplay loop>
+        <source src="muz.mp3" type="audio/mpeg" loop="true">
+    </audio>
+  
     <div class="background"></div>
     <div class="sun1"></div>
 
     <div class="title">genesis1337</div>
 
     <script>
+
+          var audio = document.getElementById('audioPlayer');
+    var audioPlayed = false;
+
+    document.addEventListener('click', function() {
+        if (!audioPlayed) {
+            audio.play();
+            audioPlayed = true;
+        }
+    });
         // Создаем глюки
 function createGlitch() {
     const glitch = document.createElement('div');
