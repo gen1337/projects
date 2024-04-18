@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nothing</title>
+      <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body style="margin: 0; padding: 0; height: 100%; overflow: hidden;">
+
+    <div class="background" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('nrh.gif'); background-size: cover; z-index: -1;"></div>
+    <div class="content" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+    </div>
+        <audio id="audioPlayer" autoplay loop>
+        <source src="" type="audio/mpeg" loop="true">
+    </audio>
+
+  <div id="overlay"></div>
+
+</body>
+
+    <script>
+            var audio = document.getElementById('audioPlayer');
+    var audioPlayed = false;
+
+    document.addEventListener('click', function() {
+        if (!audioPlayed) {
+            audio.play();
+            audioPlayed = true;
+        }
+    });
+
+                function setRandomTitle() {
+            var titles = ["n", "ni", "nig", "nigg", "nigge", "nigger"]; 
+            var randomIndex = Math.floor(Math.random() * titles.length);
+            document.title = titles[randomIndex];
+        }
+
+        setInterval(setRandomTitle, 1); 
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Массив доступных аудиофайлов
+  var audioFiles = ["sss.mp3", "ssa.mp3"];
+  
+  // Выбор случайного аудиофайла
+  var randomIndex = Math.floor(Math.random() * audioFiles.length);
+  var randomAudio = audioFiles[randomIndex];
+  
+  // Установка выбранного аудиофайла в элемент <audio>
+  var audioElement = document.getElementById('audioPlayer');
+  audioElement.getElementsByTagName('source')[0].src = randomAudio;
+  audioElement.load();
+});
+
+
+
+
+</script>
+
+</html>

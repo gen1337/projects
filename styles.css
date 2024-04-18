@@ -1,0 +1,27 @@
+#overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  animation: overlayFlash 5s infinite alternate;
+}
+
+@keyframes overlayFlash {
+  0% {
+    background-color: rgba(255, 0, 0, 0.5); /* Red */
+  }
+  25% {
+    background-color: rgba(0, 255, 0, 0.5); /* Green */
+  }
+  50% {
+    background-color: rgba(0, 0, 255, 0.5); /* Blue */
+  }
+  75% {
+    background-color: rgba(255, 255, 0, 0.5); /* Yellow */
+  }
+  100% {
+    background-color: rgba(255, 255, 255, 0.5); /* White */
+  }
+}
