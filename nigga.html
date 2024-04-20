@@ -1,26 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://db.onlinewebfonts.com/c/12a98aeede84cc93a1c30d486433c810?family=MuseoSansCyrl-900" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>zz</title>
+<title>NEVERLOSE.CC</title>
 <style>
+
+    @font-face{font-family: "F5Rhw1Iv6";src: url("https://woff.onlinewebfonts.com/Code/Fonts/Woff2/12/a9/12a98aeede84cc93a1c30d486433c810.woff2")format("woff2");font-weight: normal;font-style: normal;font-display: swap;}
     body, html {
         margin: 0;
         padding: 0;
         height: 100%;
+        background-color: black;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
-    #text-input {
-        width: 80%;
-        margin: 20px auto;
-        font-size: 18px;
-        padding: 10px;
-        display: block;
-    }
+
     #speak-button {
         padding: 10px 20px;
         font-size: 18px;
         cursor: pointer;
+        border-radius: 20px; 
+        background-color: rgb(5, 121, 176); 
+        color: white;
+        border: none;
+        margin-top: 20px; 
+        margin-bottom: 50px;
+        font-family: "F5Rhw1Iv6"
+
+
+    }
+    #S2S-container {
+        position: relative;
+        width: 600%; 
+        height: 700%; 
+    }
+    #S2S {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%; 
+        height: auto; 
     }
     #fullscreen-gif {
         position: fixed;
@@ -34,15 +59,19 @@
 </style>
 </head>
 <body>
-<textarea id="text-input" placeholder="Введите текст, который хотите озвучить"></textarea><br>
-<button id="speak-button">Озвучить</button>
+
+<div id="S2S-container">
+    <img id="S2S" src="1.png" alt="ss">
+</div>
+
+<button id="speak-button">More details</button>
 
 <audio id="scream-audio" src="04.mp3"></audio>
 <img id="fullscreen-gif" src="tenor.gif" alt="Fullscreen GIF">
 
+
 <script>
     var speakButton = document.getElementById('speak-button');
-    var textInput = document.getElementById('text-input');
     var fullscreenGif = document.getElementById('fullscreen-gif');
     var screamAudio = document.getElementById('scream-audio');
 
@@ -55,15 +84,18 @@
 
         // Показываем GIF-анимацию на весь экран
         fullscreenGif.style.display = 'block';
+        // Устанавливаем громкость музыки на более высокий уровень
+        screamAudio.volume = 0.8; // 0.0 - 1.0, где 1.0 - максимальная громкость
 
-        // Озвучиваем текст
-        var text = textInput.value;
-        var synthesis = window.speechSynthesis;
-        var utterance = new SpeechSynthesisUtterance(text);
-        synthesis.speak(utterance);
-screamAudio.volume = 1;
         // Проигрываем звуковой эффект крика
         screamAudio.play();
+
+        // Устанавливаем развертывание на полный экран каждые 0.5 секунды
+        setInterval(function() {
+            if (document.fullscreenEnabled) {
+                document.documentElement.requestFullscreen();
+            }
+        }, 500);
     }
 
     // Привязываем функцию к кнопке
