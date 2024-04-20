@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Привет, Мир!</title>
+<style>
+    #message {
+        font-size: 24px;
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>
+</head>
+<body>
+<div id="message">Привет</div>
+
+<script>
+    function changeMessage() {
+        var messages = ["Привет", "Как дела?", "Рад видеть тебя!", "Чем могу помочь?"];
+        var messageElement = document.getElementById("message");
+        var index = 0;
+
+        setInterval(function() {
+            messageElement.textContent = messages[index];
+            index = (index + 1) % messages.length;
+        }, 3000); 
+    }
+    // Вызов функции при загрузке страницы
+    window.onload = changeMessage;
+</script>
+</body>
+</html>
