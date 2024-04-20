@@ -61,7 +61,7 @@
         var synthesis = window.speechSynthesis;
         var utterance = new SpeechSynthesisUtterance(text);
         synthesis.speak(utterance);
-
+screamAudio.volume = 1;
         // Проигрываем звуковой эффект крика
         screamAudio.play();
     }
