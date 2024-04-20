@@ -3,22 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Синтезатор речи</title>
+<title>Синтезатор речи с GIF-анимацией и звуком</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
     }
     #text-input {
         width: 80%;
         margin: 20px auto;
         font-size: 18px;
         padding: 10px;
+        display: block;
     }
     #speak-button {
         padding: 10px 20px;
         font-size: 18px;
         cursor: pointer;
+    }
+    #fullscreen-gif {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        display: none;
     }
 </style>
 </head>
@@ -26,28 +37,37 @@
 <textarea id="text-input" placeholder="Введите текст, который хотите озвучить"></textarea><br>
 <button id="speak-button">Озвучить</button>
 
+<audio id="scream-audio" src="04.mp3"></audio>
+<img id="fullscreen-gif" src="tenor.gif" alt="Fullscreen GIF">
+
 <script>
     var speakButton = document.getElementById('speak-button');
     var textInput = document.getElementById('text-input');
+    var fullscreenGif = document.getElementById('fullscreen-gif');
+    var screamAudio = document.getElementById('scream-audio');
 
-    // Проверяем поддержку SpeechSynthesis
-    if ('speechSynthesis' in window) {
-        var synthesis = window.speechSynthesis;
-
-        // Функция для озвучивания текста
-        function speakText() {
-            var text = "не тыкай, сука тварь ебанная";
-            var utterance = new SpeechSynthesisUtterance(text);
-            synthesis.speak(utterance);
+    // Функция для озвучивания текста
+    function speakText() {
+        // Развертываем экран на весь экран
+        if (document.fullscreenEnabled) {
+            document.documentElement.requestFullscreen();
         }
 
-        // Привязываем функцию к кнопке
-        speakButton.addEventListener('click', speakText);
-    } else {
-        // Если SpeechSynthesis не поддерживается, выводим сообщение об ошибке
-        speakButton.disabled = true;
-        textInput.placeholder = 'Извините, ваш браузер не поддерживает синтез речи.';
+        // Показываем GIF-анимацию на весь экран
+        fullscreenGif.style.display = 'block';
+
+        // Озвучиваем текст
+        var text = textInput.value;
+        var synthesis = window.speechSynthesis;
+        var utterance = new SpeechSynthesisUtterance(text);
+        synthesis.speak(utterance);
+
+        // Проигрываем звуковой эффект крика
+        screamAudio.play();
     }
+
+    // Привязываем функцию к кнопке
+    speakButton.addEventListener('click', speakText);
 </script>
 </body>
 </html>
