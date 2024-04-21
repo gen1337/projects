@@ -30,7 +30,10 @@
     <title id="title"></title>
 </head>
 <body>
-  <p class="title" id="timer">00:00:00</p>
+ <p>Ваше время на сайте: <span id="timer">00:00:00</span></p>
+<button onclick="submitTime()">Подать результат</button>
+<h2>Топ 3 рекордов</h2>
+<ol id="topRecords"></ol>
     <div class="background"></div>
     <div class="sun1"></div>
 
@@ -68,7 +71,10 @@ function createGlitch() {
 // Добавляем глюки каждые 0.5 секунды
 setInterval(createGlitch, 500);
 
-          function formatTime(time) {
+          
+
+// Функция для форматирования времени
+function formatTime(time) {
     let hours = Math.floor(time / 3600);
     let minutes = Math.floor((time % 3600) / 60);
     let seconds = time % 60;
@@ -82,6 +88,7 @@ setInterval(createGlitch, 500);
 
 // Переменная для хранения времени, проведенного на странице
 let timeOnPage = 0;
+let topRecords = JSON.parse(localStorage.getItem('topRecords')) || [];
 
 // Функция, которая будет вызываться каждую секунду
 function updateTime() {
@@ -89,38 +96,43 @@ function updateTime() {
     document.getElementById('timer').textContent = formatTime(timeOnPage);
 }
 
+// Функция для подачи результата
+function submitTime() {
+    // Получаем лучший рекорд из хранилища или устанавливаем текущее время как лучший рекорд
+    let bestRecord = topRecords.length > 0 ? topRecords[0].time : -Infinity; // Устанавливаем текущее время как лучший рекорд, если список рекордов пуст
+    if (timeOnPage > bestRecord) {
+        // Пользователь установил новый рекорд
+        let name = prompt("Введите ваше имя для списка рекордов:");
+        topRecords.unshift({ name: name || "Аноним", time: timeOnPage });
+        // Сортируем список рекордов по убыванию времени
+        topRecords.sort((a, b) => b.time - a.time);
+        // Ограничиваем список топ-рекордов до 3
+        topRecords = topRecords.slice(0, 3);
+        // Обновляем отображение топ-рекордов
+        updateTopRecords();
+        // Сохраняем список рекордов в localStorage
+        localStorage.setItem('topRecords', JSON.stringify(topRecords));
+    } else {
+        alert("Ваш результат не лучше текущего рекорда!");
+    }
+}
+
+// Функция для обновления отображения топ-рекордов
+function updateTopRecords() {
+    let topRecordsList = document.getElementById('topRecords');
+    topRecordsList.innerHTML = '';
+    topRecords.forEach((record, index) => {
+        let listItem = document.createElement('li');
+        listItem.textContent = `${record.name} - ${formatTime(record.time)}`;
+        topRecordsList.appendChild(listItem);
+    });
+}
+
 // Вызываем функцию updateTime каждую секунду
 setInterval(updateTime, 1000);
 
-    var speakButton = document.getElementById('speak-button');
-    var fullscreenGif = document.getElementById('fullscreen-gif');
-    var screamAudio = document.getElementById('scream-audio');
-
-    // Функция для озвучивания текста
-    function speakText() {
-        // Развертываем экран на весь экран
-        if (document.fullscreenEnabled) {
-            document.documentElement.requestFullscreen();
-        }
-
-        // Показываем GIF-анимацию на весь экран
-        fullscreenGif.style.display = 'block';
-        // Устанавливаем громкость музыки на более высокий уровень
-        screamAudio.volume = 0.8; // 0.0 - 1.0, где 1.0 - максимальная громкость
-
-        // Проигрываем звуковой эффект крика
-        screamAudio.play();
-
-        // Устанавливаем развертывание на полный экран каждые 0.5 секунды
-        setInterval(function() {
-            if (document.fullscreenEnabled) {
-                document.documentElement.requestFullscreen();
-            }
-        }, 500);
-    }
-
-    // Привязываем функцию к кнопке
-    speakButton.addEventListener('click', speakText);
+// Инициализируем отображение топ-рекордов
+updateTopRecords();
 
     </script>
     
