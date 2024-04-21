@@ -76,6 +76,61 @@ function createGlitch() {
 // Добавляем глюки каждые 0.5 секунды
 setInterval(createGlitch, 500);
 
+// Функция для форматирования времени
+function formatTime(time) {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+// Переменные для хранения времени, проведенного на странице и интервала
+let timeOnPage = 0;
+let timerInterval;
+
+// Функция, которая будет вызываться каждую секунду
+function updateTime() {
+    timeOnPage++;
+    document.getElementById('timer').textContent = formatTime(timeOnPage);
+}
+
+// Функция для запуска таймера
+function startTimer() {
+    timerInterval = setInterval(updateTime, 1000);
+}
+
+// Функция для остановки таймера
+function stopTimer() {
+    clearInterval(timerInterval);
+}
+
+// Функция для подачи результата
+function submitTime() {
+    // Остановка таймера
+    stopTimer();
+
+    // Отправляем новый рекорд на сервер
+    let name = prompt("Введите ваше имя для списка рекордов:");
+    let newRecord = { name: name || "Аноним", time: timeOnPage };
+    postData('server_script.php', newRecord)
+        .then(data => {
+            // Обновляем отображение топ-3 рекордов
+            updateTopRecords(data);
+            // Запускаем таймер заново
+            startTimer();
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            // Запускаем таймер заново в случае ошибки
+            startTimer();
+        });
+}
+
 // Функция для отправки POST-запроса на сервер
 async function postData(url = '', data = {}) {
     const response = await fetch(url, {
@@ -96,21 +151,6 @@ async function loadTopRecords() {
     return response.json();
 }
 
-// Функция для подачи результата
-function submitTime() {
-    // Отправляем новый рекорд на сервер
-    let name = prompt("Введите ваше имя для списка рекордов:");
-    let newRecord = { name: name || "Аноним", time: timeOnPage };
-    postData('server_script.php', newRecord)
-        .then(data => {
-            // Обновляем отображение топ-3 рекордов
-            updateTopRecords(data);
-        })
-        .catch(error => {
-            console.error('Ошибка:', error);
-        });
-}
-
 // Функция для обновления отображения топ-3 рекордов
 function updateTopRecords(records) {
     let topRecordsList = document.getElementById('topRecords');
@@ -122,27 +162,18 @@ function updateTopRecords(records) {
     });
 }
 
-// Переменная для хранения времени, проведенного на странице
-let timeOnPage = 0;
-
-// Функция, которая будет вызываться каждую секунду
-function updateTime() {
-    timeOnPage++;
-    document.getElementById('timer').textContent = formatTime(timeOnPage);
-}
-
-// Вызываем функцию updateTime каждую секунду
-setInterval(updateTime, 1000);
-
-// При загрузке страницы загружаем топ-3 рекордов с сервера
+// Вызываем функцию загрузки топ-3 рекордов с сервера при загрузке страницы
 loadTopRecords()
     .then(data => {
         updateTopRecords(data);
+        // Запускаем таймер после загрузки рекордов
+        startTimer();
     })
     .catch(error => {
         console.error('Ошибка:', error);
+        // Запускаем таймер в случае ошибки при загрузке рекордов
+        startTimer();
     });
-
 
     </script>
     
