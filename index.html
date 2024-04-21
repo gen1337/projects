@@ -75,7 +75,6 @@ function createGlitch() {
 
 // Добавляем глюки каждые 0.5 секунды
 setInterval(createGlitch, 500);
-
 // Функция для форматирования времени
 function formatTime(time) {
     let hours = Math.floor(time / 3600);
@@ -117,7 +116,7 @@ function submitTime() {
     // Отправляем новый рекорд на сервер
     let name = prompt("Введите ваше имя для списка рекордов:");
     let newRecord = { name: name || "Аноним", time: timeOnPage };
-    postData('ss.php', newRecord)
+    postData('server_script.php', newRecord)
         .then(data => {
             // Обновляем отображение топ-3 рекордов
             updateTopRecords(data);
@@ -145,7 +144,7 @@ async function postData(url = '', data = {}) {
 
 // Функция для загрузки топ-3 рекордов с сервера
 async function loadTopRecords() {
-    const response = await fetch('ss.php', {
+    const response = await fetch('server_script.php', {
         method: 'GET'
     });
     return response.json();
@@ -174,7 +173,6 @@ loadTopRecords()
         // Запускаем таймер в случае ошибки при загрузке рекордов
         startTimer();
     });
-
     </script>
     
 </body>
