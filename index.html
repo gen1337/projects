@@ -21,7 +21,12 @@
 
 <html lang="en">
 <head>
-
+<style>
+     @font-face{font-family: "F5Rhw1Iv6";src: url("https://woff.onlinewebfonts.com/Code/Fonts/Woff2/12/a9/12a98aeede84cc93a1c30d486433c810.woff2")format("woff2");font-weight: normal;font-style: normal;font-display: swap;}
+  #nogrpos {
+font-family: "F5Rhw1Iv6"
+  }
+</style>
 
     <link rel="stylesheet" type="text/css" href="background.css">
     <link rel="stylesheet" type="text/css" href="sun.css">
@@ -30,9 +35,9 @@
     <title id="title"></title>
 </head>
 <body>
- <p>Ваше время на сайте: <span id="timer">00:00:00</span></p>
-<button onclick="submitTime()">Подать результат</button>
-<h2>Топ 3 рекордов</h2>
+ <p class="nogrpos">Ваше время на сайте: <span class="nogrpos" id="timer">00:00:00</span></p>
+<button class="nogrpos" onclick="submitTime()">Подать результат</button>
+<h2 class="nogrpos">Топ 3 рекордов</h2>
 <ol id="topRecords"></ol>
     <div class="background"></div>
     <div class="sun1"></div>
