@@ -117,7 +117,7 @@ function submitTime() {
     // Отправляем новый рекорд на сервер
     let name = prompt("Введите ваше имя для списка рекордов:");
     let newRecord = { name: name || "Аноним", time: timeOnPage };
-    postData('server_script.php', newRecord)
+    postData('ss.php', newRecord)
         .then(data => {
             // Обновляем отображение топ-3 рекордов
             updateTopRecords(data);
@@ -145,7 +145,7 @@ async function postData(url = '', data = {}) {
 
 // Функция для загрузки топ-3 рекордов с сервера
 async function loadTopRecords() {
-    const response = await fetch('server_script.php', {
+    const response = await fetch('ss.php', {
         method: 'GET'
     });
     return response.json();
