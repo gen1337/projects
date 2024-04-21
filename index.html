@@ -76,24 +76,54 @@ function createGlitch() {
 // Добавляем глюки каждые 0.5 секунды
 setInterval(createGlitch, 500);
 
-          
+// Функция для отправки POST-запроса на сервер
+async function postData(url = '', data = {}) {
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+    return response.json();
+}
 
-// Функция для форматирования времени
-function formatTime(time) {
-    let hours = Math.floor(time / 3600);
-    let minutes = Math.floor((time % 3600) / 60);
-    let seconds = time % 60;
+// Функция для загрузки топ-3 рекордов с сервера
+async function loadTopRecords() {
+    const response = await fetch('server_script.php', {
+        method: 'GET'
+    });
+    return response.json();
+}
 
-    hours = String(hours).padStart(2, '0');
-    minutes = String(minutes).padStart(2, '0');
-    seconds = String(seconds).padStart(2, '0');
+// Функция для подачи результата
+function submitTime() {
+    // Отправляем новый рекорд на сервер
+    let name = prompt("Введите ваше имя для списка рекордов:");
+    let newRecord = { name: name || "Аноним", time: timeOnPage };
+    postData('server_script.php', newRecord)
+        .then(data => {
+            // Обновляем отображение топ-3 рекордов
+            updateTopRecords(data);
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+        });
+}
 
-    return `${hours}:${minutes}:${seconds}`;
+// Функция для обновления отображения топ-3 рекордов
+function updateTopRecords(records) {
+    let topRecordsList = document.getElementById('topRecords');
+    topRecordsList.innerHTML = '';
+    records.forEach((record, index) => {
+        let listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${record.name} - ${formatTime(record.time)}`;
+        topRecordsList.appendChild(listItem);
+    });
 }
 
 // Переменная для хранения времени, проведенного на странице
 let timeOnPage = 0;
-let topRecords = JSON.parse(localStorage.getItem('topRecords')) || [];
 
 // Функция, которая будет вызываться каждую секунду
 function updateTime() {
@@ -101,43 +131,18 @@ function updateTime() {
     document.getElementById('timer').textContent = formatTime(timeOnPage);
 }
 
-// Функция для подачи результата
-function submitTime() {
-    // Получаем лучший рекорд из хранилища или устанавливаем текущее время как лучший рекорд
-    let bestRecord = topRecords.length > 0 ? topRecords[0].time : -Infinity; // Устанавливаем текущее время как лучший рекорд, если список рекордов пуст
-    if (timeOnPage > bestRecord) {
-        // Пользователь установил новый рекорд
-        let name = prompt("Введите ваше имя для списка рекордов:");
-        topRecords.unshift({ name: name || "Аноним", time: timeOnPage });
-        // Сортируем список рекордов по убыванию времени
-        topRecords.sort((a, b) => b.time - a.time);
-        // Ограничиваем список топ-рекордов до 3
-        topRecords = topRecords.slice(0, 3);
-        // Обновляем отображение топ-рекордов
-        updateTopRecords();
-        // Сохраняем список рекордов в localStorage
-        localStorage.setItem('topRecords', JSON.stringify(topRecords));
-    } else {
-        alert("Ваш результат не лучше текущего рекорда!");
-    }
-}
-
-// Функция для обновления отображения топ-рекордов
-function updateTopRecords() {
-    let topRecordsList = document.getElementById('topRecords');
-    topRecordsList.innerHTML = '';
-    topRecords.forEach((record, index) => {
-        let listItem = document.createElement('li');
-        listItem.textContent = `${record.name} - ${formatTime(record.time)}`;
-        topRecordsList.appendChild(listItem);
-    });
-}
-
 // Вызываем функцию updateTime каждую секунду
 setInterval(updateTime, 1000);
 
-// Инициализируем отображение топ-рекордов
-updateTopRecords();
+// При загрузке страницы загружаем топ-3 рекордов с сервера
+loadTopRecords()
+    .then(data => {
+        updateTopRecords(data);
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+    });
+
 
     </script>
     
