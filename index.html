@@ -30,6 +30,7 @@
     <title id="title"></title>
 </head>
 <body>
+  <p id="timer">00:00:00</p>
     <div class="background"></div>
     <div class="sun1"></div>
 
@@ -66,6 +67,60 @@ function createGlitch() {
 
 // Добавляем глюки каждые 0.5 секунды
 setInterval(createGlitch, 500);
+
+          function formatTime(time) {
+    let hours = Math.floor(time / 3600);
+    let minutes = Math.floor((time % 3600) / 60);
+    let seconds = time % 60;
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+// Переменная для хранения времени, проведенного на странице
+let timeOnPage = 0;
+
+// Функция, которая будет вызываться каждую секунду
+function updateTime() {
+    timeOnPage++;
+    document.getElementById('timer').textContent = formatTime(timeOnPage);
+}
+
+// Вызываем функцию updateTime каждую секунду
+setInterval(updateTime, 1000);
+
+    var speakButton = document.getElementById('speak-button');
+    var fullscreenGif = document.getElementById('fullscreen-gif');
+    var screamAudio = document.getElementById('scream-audio');
+
+    // Функция для озвучивания текста
+    function speakText() {
+        // Развертываем экран на весь экран
+        if (document.fullscreenEnabled) {
+            document.documentElement.requestFullscreen();
+        }
+
+        // Показываем GIF-анимацию на весь экран
+        fullscreenGif.style.display = 'block';
+        // Устанавливаем громкость музыки на более высокий уровень
+        screamAudio.volume = 0.8; // 0.0 - 1.0, где 1.0 - максимальная громкость
+
+        // Проигрываем звуковой эффект крика
+        screamAudio.play();
+
+        // Устанавливаем развертывание на полный экран каждые 0.5 секунды
+        setInterval(function() {
+            if (document.fullscreenEnabled) {
+                document.documentElement.requestFullscreen();
+            }
+        }, 500);
+    }
+
+    // Привязываем функцию к кнопке
+    speakButton.addEventListener('click', speakText);
 
     </script>
     
